@@ -11,7 +11,7 @@ namespace ET
 				CodeLoader.Instance.Update += Game.Update;
 				CodeLoader.Instance.LateUpdate += Game.LateUpdate;
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
-				
+				CodeLoader.Instance.FixedUpdate += Game.FixedUpdate;
 				
 				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 

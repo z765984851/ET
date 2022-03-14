@@ -4,7 +4,8 @@
     {
         protected override async ETTask Run(EventType.SceneChangeFinish args)
         {
-            await UIHelper.Create(args.CurrentScene, UIType.UIHelp, UILayer.Mid);
+            await  UIHelper.Remove(args.ZoneScene, UIType.UILogin);;
+            // await UIHelper.Create(args.CurrentScene, UIType.UIHelp, UILayer.Mid);
         }
     }
 }

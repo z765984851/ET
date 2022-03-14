@@ -14,6 +14,7 @@ namespace ET
 		public Action Update;
 		public Action LateUpdate;
 		public Action OnApplicationQuit;
+		public Action FixedUpdate;
 
 		private Assembly assembly;
 
@@ -58,9 +59,6 @@ namespace ET
 					//byte[] pdbBytes = File.ReadAllBytes(Path.Combine("../Unity/", Define.BuildOutputDir, "Code.pdb"));
 				
 					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
-					this.appDomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
-#endif
 					MemoryStream assStream = new MemoryStream(assBytes);
 					MemoryStream pdbStream = new MemoryStream(pdbBytes);
 					appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());

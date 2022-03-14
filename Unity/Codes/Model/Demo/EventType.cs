@@ -95,5 +95,37 @@ namespace ET
         public struct UnitEnterSightRange
         {
         }
+
+        public struct LoadAsset
+        {
+            public int AssetsCount;
+            public int LoadedCount;
+        }
+
+        public struct DownloadInfo
+        {
+            public long NeedDownloadSize;
+            public long DownloadedSize;
+        }
+
+        public struct PlayerCollider
+        {
+            public Unit Player1;
+            public Unit Player2;
+        }
+
+        public struct PlayerColliderDisplay
+        {
+            public Unit ForcePlayer;
+            public Vector3 Direction;
+            public float Distance;
+        }
+
+        public struct PlayerMove
+        {
+            public Unit Unit;
+            public Vector3 TargetPos;
+        }
+        
     }
 }

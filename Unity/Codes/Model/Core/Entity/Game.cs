@@ -45,6 +45,11 @@ namespace ET
             EventSystem.LateUpdate();
         }
 
+        public static void FixedUpdate()
+        {
+            EventSystem.FixedUpdate();
+        }
+        
         public static void FrameFinish()
         {
             foreach (Action action in FrameFinishCallback)

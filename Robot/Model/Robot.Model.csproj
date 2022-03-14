@@ -31,6 +31,15 @@
         <Compile Include="..\..\Server\Model\Base\StructBsonSerialize.cs">
           <Link>Base\StructBsonSerialize.cs</Link>
         </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Collider\BoxColliderComponent.cs">
+          <Link>IMBattle\Collider\BoxColliderComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Collider\ColliderCheckComponent.cs">
+          <Link>IMBattle\Collider\ColliderCheckComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Player\PlayerMoveComponent.cs">
+          <Link>IMBattle\Player\PlayerMoveComponent.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
