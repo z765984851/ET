@@ -10,24 +10,35 @@ namespace ET
         public int Mass;
    
         /// <summary>
-        /// 当前x轴速度,发生变化
+        /// 当前x轴速度,发生变化,需要除以1000
         /// </summary>
         public int CurrentXSpeed=0;
+        
+        /// <summary>
+        /// 当前y轴速度
+        /// </summary>
+        public int JumpSpeed = 500;
+
+        /// <summary>
+        /// 在跳跃状态停留的时间 单位ms
+        /// </summary>
+        public int JumpTime = 500;
+        
   
         /// <summary>
-        /// 当前z轴速度,不发生变化
+        /// 当前z轴速度,不发生变化,需要除以1000
         /// </summary>
-        public int CurrentZSpeed=5;
+        public int CurrentZSpeed = 100;
         
         /// <summary>
         /// 加速度
         /// </summary>
-        public int Acceleration=1;
+        public int Acceleration = 10;
 
         /// <summary>
         /// 最大速度
         /// </summary>
-        public int MaxSpeed=5;
+        public int MaxSpeed = 100;
         
         /// <summary>
         /// 上一帧所在位置
@@ -55,8 +66,17 @@ namespace ET
         /// 当前大小信息
         /// </summary>
         public Vector3 LocalScale;
-        
-        
-        
+
+        /// <summary>
+        /// 碰撞持续时间 单位ms
+        /// </summary>
+        public int CollisionTime=300;
+
+
+        /// <summary>
+        /// 碰撞后需要位移的数据 方向x长度
+        /// </summary>
+        public Vector3 CollisionData;
+
     }
 }

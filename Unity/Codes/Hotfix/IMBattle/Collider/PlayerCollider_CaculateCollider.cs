@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using UnityEngine;
 
 namespace ET
@@ -12,7 +13,11 @@ namespace ET
             Unit player2 = args.Player2;
             PlayerMoveComponent moveComponent1 = player1.GetComponent<PlayerMoveComponent>();
             PlayerMoveComponent moveComponent2 = player2.GetComponent<PlayerMoveComponent>();
-            if (moveComponent1.IsCollision&& moveComponent2.IsCollision)
+            if (moveComponent1==null || moveComponent2==null)
+            {
+                return;
+            }
+            if (!moveComponent1.IsCollision&& !moveComponent2.IsCollision)
             {
                 Vector3 speed1 = moveComponent1.GetSpeedVector();
                 Vector3 speed2 = moveComponent2.GetSpeedVector();
@@ -48,7 +53,7 @@ namespace ET
                         forcePlayer = player1;
                         direction = speed2.normalized;
                     }
-                    distance = Mathf.Abs( massDif * 0.05f);
+                    distance = Mathf.Abs( massDif) ;
                 
                 }
                 //双方有一方不移动
@@ -65,13 +70,13 @@ namespace ET
                         {
                             Debug.Log("玩家1重且未移动");
                             direction = -speed2.normalized;
-                            distance = Mathf.Abs( massDif * 0.05f);
+                            distance = Mathf.Abs( massDif);
                         }
                         else
                         {
                             Debug.Log("玩家1重且移动");
                             direction = speed1.normalized;
-                            distance = Mathf.Abs( massDif * 0.05f);
+                            distance = Mathf.Abs( massDif);
                         }
                     }
                     else if(massDif<0)
@@ -83,13 +88,13 @@ namespace ET
                         {
                             Debug.Log("玩家2重且未移动");
                             direction = -speed1.normalized;
-                            distance = Mathf.Abs( massDif * 0.05f);
+                            distance = Mathf.Abs( massDif);
                         }
                         else
                         {
                             Debug.Log("玩家2重且移动");
                             direction = speed2.normalized;
-                            distance = Mathf.Abs( massDif * 0.05f);
+                            distance = Mathf.Abs( massDif);
                         }
                     }
                     //相同 停下
@@ -112,17 +117,16 @@ namespace ET
                 
                 }
 
-                if (forcePlayer!=null)
+                var moveComponent = forcePlayer.GetComponent<PlayerMoveComponent>();
+                var speedCal = Mathf.Clamp((float)moveComponent.CurrentXSpeed / moveComponent.MaxSpeed,0.5f,1f) ;
+                   
+                Game.EventSystem.Publish(new EventType.PlayerColliderDisplay()
                 {
-                    Debug.Log($"碰撞结果 {forcePlayer},{direction},{distance} ");
-                    Game.EventSystem.Publish(new EventType.PlayerColliderDisplay()
-                    {
-                        Direction = direction,
-                        Distance = distance,
-                        ForcePlayer = forcePlayer
-                    });
-                    
-                }
+                    Direction = direction ,
+                    Distance = distance * speedCal/2,
+                    ForcePlayer = forcePlayer
+                });
+                Debug.Log($"碰撞结果 {forcePlayer.ConfigId},{speedCal},{direction},{distance} ");
                 
             }
             

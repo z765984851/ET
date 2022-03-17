@@ -27,51 +27,57 @@ namespace ET
                 // Log.Debug("没有获取到移动组件");
                 return;
             }
-            if (moveComponent.IsCollision)
+            if (!moveComponent.IsCollision)
             {
-                // Log.Debug("正常碰撞");
-                return;
-            }
-
-           
-            if (Input.GetKey(self.ForwardKey))
-            {
+                if (Input.GetKey(self.ForwardKey))
+                {
                
-                if (self.CanCtrl)
+                    if (self.CanCtrl)
+                    {
+                        moveComponent.InputMove_Forward();
+                    }
+                                               
+                }
+                if (Input.GetKey(self.BackKey))
                 {
-                    moveComponent.InputMove_Forward();
+                    if (self.CanCtrl)
+                    {
+                        moveComponent.InputMove_Back();
+                    }
                 }
                                                
-            }
-            if (Input.GetKey(self.BackKey))
-            {
-                if (self.CanCtrl)
+                if (Input.GetKey(self.LeftKey))
                 {
-                    moveComponent.InputMove_Back();
-                }
-            }
-                                               
-            if (Input.GetKey(self.LeftKey))
-            {
                                        
-                if (self.CanCtrl)
-                {
-                    moveComponent.InputMove_Left();
+                    if (self.CanCtrl)
+                    {
+                        moveComponent.InputMove_Left();
+                    }
                 }
-            }
-            else if (Input.GetKey(self.RightKey))
-            {
-                                       
-                if (self.CanCtrl)
+                else if (Input.GetKey(self.RightKey))
                 {
-                    moveComponent.InputMove_Right();
+                                       
+                    if (self.CanCtrl)
+                    {
+                        moveComponent.InputMove_Right();
+                    }
+                }
+                else
+                {
+                    moveComponent.SpeedDown();
+                             
                 }
             }
             else
             {
-                moveComponent.SpeedDown();
-                             
+                //碰撞演出
+                Vector3 targetPos = moveComponent.Position + moveComponent.CollisionData * (Time.fixedDeltaTime / 0.3f);
+                moveComponent.SetPos(targetPos);
+                Debug.Log($"碰撞播放{self.Unit.ConfigId},{targetPos}");
             }
+
+           
+           
         }
 
         public static void ColliderDisplay(this PlayerControllerComponent self,float distance,Vector3 direction)
@@ -80,24 +86,21 @@ namespace ET
             var moveComponent= self.Unit.GetComponent<PlayerMoveComponent>();
             if (moveComponent!=null)
             {
-                GameObject gameObject = self.Unit.GetComponent<GameObjectComponent>().GameObject;
-                if (gameObject!=null)
-                {
-                    var tranform = gameObject.transform;
-                    var target = direction * distance + moveComponent.Position;
-                    self.CanCtrl = false;
-                    moveComponent.IsCollision = true;
-                    tranform.DOMove(target,0.5f).OnComplete(() =>
-                    {
-                        self.CanCtrl = true;
-                        moveComponent.IsCollision = false;
-                    });
-                }
-                
-            }
 
+                moveComponent.CollisionData = direction * distance;
+                self.ColliderTimer().Coroutine();
+            }
+        }
+
+        public static async ETTask ColliderTimer(this PlayerControllerComponent self)
+        {
             
-            
+            var moveComponent= self.Unit.GetComponent<PlayerMoveComponent>();
+            moveComponent?.SetCollision(true);
+            self.CanCtrl = false;
+            await TimerComponent.Instance.WaitAsync(moveComponent.CollisionTime);
+            self.CanCtrl = true;
+            moveComponent?.SetCollision(false);
         }
     }
 }

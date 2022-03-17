@@ -6,5 +6,7 @@
         Monster = 2,
         NPC = 3,
         Player2=4,
+        Barrier=5,
+        Ground=6,
     }
 }

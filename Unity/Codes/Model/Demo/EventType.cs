@@ -127,5 +127,20 @@ namespace ET
             public Vector3 TargetPos;
         }
         
+        public struct AfterPlayerUnitCreate
+        {
+            public Unit Unit;
+        }
+        
+        public struct AfterGroundUnitCreate
+        {
+            public Unit Unit;
+            public string Name;
+        }
+        
+        public struct UnitDrop
+        {
+            public Unit Unit;
+        }
     }
 }

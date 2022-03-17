@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 namespace ET
 {
-    public class AfterUnitCreate_CreateUnitView: AEvent<EventType.AfterUnitCreate>
+    public class AfterPlayerUnitCreate_CreateUnitView : AEvent<EventType.AfterPlayerUnitCreate>
     {
-        protected override async ETTask Run(EventType.AfterUnitCreate args)
+        protected override async ETTask Run(EventType.AfterPlayerUnitCreate args)
         {
             Unit unit = args.Unit;
           

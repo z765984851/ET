@@ -9,18 +9,14 @@ namespace ET
         public override void Awake(LevelLifeComponent self)
         {
             self.Players = new List<Unit>();
+            self.LevelUnits = new List<Unit>();
             ColliderCheckComponent colliderSystem= self.AddComponent<ColliderCheckComponent>();
-            Log.Debug("Level Life  Awake !!!!!");
-            Unit player1= UnitFactory.Create(self.DomainScene(), UnitType.Player);
-            Unit player2= UnitFactory.Create(self.DomainScene(), UnitType.Player2);
-            self.Players.Add(player1);
-            self.Players.Add(player2);
-
             colliderSystem.ColliderUnits = new List<Unit>();
-            colliderSystem.ColliderUnits.Add(player1);
-            colliderSystem.ColliderUnits.Add(player2);
-
-
+            Log.Debug("Level Life  Awake !!!!!");
+          
+            self.CreatePlayer1();
+            self.CreatePlayer2();
+            self.CollectSceneUnits();
         }
     }
     
@@ -29,7 +25,15 @@ namespace ET
     {
         public override void FixedUpdate(LevelLifeComponent self)
         {
-            // Log.Debug($"Level Life  FixedUpdate !!!!!,{Time.timeSinceLevelLoad}");
+            //确认所有unit的实体已经生成完毕再开始进行逻辑
+            for (int i = 0; i < self.LevelUnits.Count; i++)
+            {
+                Unit unit = self.LevelUnits[i];
+                if (unit.GetComponent<GameObjectComponent>()==null)
+                {
+                    return;
+                }
+            }
             //检测用户按键
             for (int i = 0; i < self.Players.Count; i++)
             {
@@ -42,17 +46,19 @@ namespace ET
                 }
                 
             }
+           
+            
+            //刷新碰撞盒数据
             for (int i = 0; i < self.Players.Count; i++)
             {
                 Unit player = self.Players[i];
                 var colliderComponent= player.GetComponent<BoxColliderComponent>();
-                var gameObject=player.GetComponent<GameObjectComponent>();
-                if (colliderComponent!=null&& gameObject !=null)
+                var moveComponent=player.GetComponent<PlayerMoveComponent>();
+                if (colliderComponent!=null&& moveComponent !=null)
                 {
-                    // Log.Debug("用户控制检测");
-                    colliderComponent.Center = gameObject.GameObject.transform.position;
-                    colliderComponent.Rotation =gameObject.GameObject.transform.rotation;
-                    colliderComponent.Extents = 0.5f * gameObject.GameObject.transform.localScale;
+                    colliderComponent.Center = moveComponent.Position;
+                    colliderComponent.Rotation =moveComponent.Rotation;
+                    colliderComponent.Extents = 0.5f * moveComponent.LocalScale;
                 }
                 
             }
@@ -68,8 +74,51 @@ namespace ET
     }
     
     
-    public class LevelLifeComponentSystem
+    public static class LevelLifeComponentSystem
     {
+        public static void CreatePlayer1(this LevelLifeComponent self)
+        {
+            
+            Unit player= UnitFactory.CreatePlayer(self.DomainScene(), UnitType.Player);
+            self.Players.Add(player);
+            self.LevelUnits.Add(player);
+            ColliderCheckComponent colliderSystem= self.GetComponent<ColliderCheckComponent>();
+            if (colliderSystem!=null)
+            {
+                colliderSystem.ColliderUnits.Add(player);
+            }
+ 
+        }
+        
+        public static void CreatePlayer2(this LevelLifeComponent self)
+        {
+            
+            Unit player= UnitFactory.CreatePlayer(self.DomainScene(), UnitType.Player2);
+            self.Players.Add(player);
+            self.LevelUnits.Add(player);
+            ColliderCheckComponent colliderSystem= self.GetComponent<ColliderCheckComponent>();
+            if (colliderSystem!=null)
+            {
+                colliderSystem.ColliderUnits.Add(player);
+            }
+ 
+        }
+        
+        /// <summary>
+        /// 收集本来就在场景内的unit
+        /// </summary>
+        /// <param name="self"></param>
+        public static void CollectSceneUnits(this LevelLifeComponent self)
+        {
+            
+           Unit ground=UnitFactory.CreateGround(self.DomainScene(),"Ground1");
+           self.LevelUnits.Add(ground);
+           ColliderCheckComponent colliderSystem= self.GetComponent<ColliderCheckComponent>();
+           if (colliderSystem!=null)
+           {
+               colliderSystem.ColliderUnits.Add(ground);
+           }
+        }
         
     }
 }

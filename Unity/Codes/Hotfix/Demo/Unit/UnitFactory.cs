@@ -45,38 +45,41 @@ namespace ET
             return unit;
         }
         
-        
-        
-        public static Unit Create(Scene currentScene, UnitType unitType)
-        {
-	        Unit unit = null;
-	        switch (unitType)
-	        {
-		        case UnitType.Player:
-			        unit=CreatePlayer(currentScene, unitType);
-			        break;
-		        case UnitType.Player2:
-			        unit= CreatePlayer(currentScene, unitType);
-			        break;
-		        default:
-			        break;
-			        
-	        }
-	        return unit;
-        }
 
-        private static Unit CreatePlayer(Scene currentScene, UnitType unitType)
+        /// <summary>
+        /// 创建玩家
+        /// </summary>
+        /// <param name="currentScene"></param>
+        /// <param name="unitType"></param>
+        /// <returns></returns>
+        public static Unit CreatePlayer(Scene currentScene, UnitType unitType)
         {
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(Game.IdGenerater.GenerateId(), (int)unitType);
 	        unitComponent.Add(unit);
 	        unit.AddComponent<BoxColliderComponent>();
 	        unit.AddComponent<PlayerMoveComponent>();
-	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
+	        Game.EventSystem.Publish(new EventType.AfterPlayerUnitCreate() {Unit = unit});
 	        return unit;
         }
         
-       
+        /// <summary>
+        /// 创建地面
+        /// </summary>
+        /// <param name="currentScene"></param>
+        /// <param name="unitType"></param>
+        /// <returns></returns>
+        public static Unit CreateGround(Scene currentScene, string name)
+        {
+	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
+	        Unit unit = unitComponent.AddChildWithId<Unit, int>(Game.IdGenerater.GenerateId(), (int)UnitType.Ground);
+	        unitComponent.Add(unit);
+	        unit.AddComponent<BoxColliderComponent>();
+	        Game.EventSystem.Publish(new EventType.AfterGroundUnitCreate() {Unit = unit,Name = name});
+	        return unit;
+        }
+        
+        
         
     }
 }

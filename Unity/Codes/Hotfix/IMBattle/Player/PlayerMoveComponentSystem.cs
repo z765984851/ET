@@ -9,7 +9,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="pos"></param>
-        public static void UpdatePos(this PlayerMoveComponent self,Vector3 pos)
+        public static void SetPos(this PlayerMoveComponent self,Vector3 pos)
         {
             self.LastFramePos = self.Position;
             self.Position = pos;
@@ -26,7 +26,7 @@ namespace ET
         {
             self.IsCollision = isCollision;
         }
-        
+       
 
         /// <summary>
         /// 获取速度方向向量
@@ -80,8 +80,8 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Forward(this PlayerMoveComponent self)
         {
-            Vector3 target = self.Position + Vector3.forward * self.CurrentZSpeed/10;
-            self.UpdatePos(target);
+            Vector3 target = self.Position + Vector3.forward * self.CurrentZSpeed/1000;
+            self.SetPos(target);
         }
         /// <summary>
         /// 输入向后移动的按键
@@ -89,8 +89,8 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Back(this PlayerMoveComponent self)
         {
-            Vector3 target = self.Position + Vector3.back * self.CurrentZSpeed/10;
-            self.UpdatePos(target);
+            Vector3 target = self.Position + Vector3.back * self.CurrentZSpeed/1000;
+            self.SetPos(target);
         }
         
         /// <summary>
@@ -100,8 +100,8 @@ namespace ET
         public static void InputMove_Left(this PlayerMoveComponent self)
         {
             self.SpeedUp_Left();
-            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/10;
-            self.UpdatePos(target);
+            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/1000;
+            self.SetPos(target);
         }
         
         /// <summary>
@@ -111,8 +111,8 @@ namespace ET
         public static void InputMove_Right(this PlayerMoveComponent self)
         {
             self.SpeedUp_Right();
-            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/10;
-            self.UpdatePos(target);
+            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/1000;
+            self.SetPos(target);
         }
 
         
