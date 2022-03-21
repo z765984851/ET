@@ -37,8 +37,23 @@
         <Compile Include="..\..\Unity\Codes\Model\IMBattle\Collider\ColliderCheckComponent.cs">
           <Link>IMBattle\Collider\ColliderCheckComponent.cs</Link>
         </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Drop\DropComponent.cs">
+          <Link>IMBattle\Drop\DropComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Player\MassComponent.cs">
+          <Link>IMBattle\Player\MassComponent.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Codes\Model\IMBattle\Player\PlayerMoveComponent.cs">
           <Link>IMBattle\Player\PlayerMoveComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Transform\TransformEulerAngleComponent.cs">
+          <Link>IMBattle\Transform\TransformEulerAngleComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Transform\TransformLocalScaleComponent.cs">
+          <Link>IMBattle\Transform\TransformLocalScaleComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\IMBattle\Transform\TransformPositionComponent.cs">
+          <Link>IMBattle\Transform\TransformPositionComponent.cs</Link>
         </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Config\**\*.cs">
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>

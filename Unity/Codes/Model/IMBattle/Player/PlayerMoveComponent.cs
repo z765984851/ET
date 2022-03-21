@@ -4,27 +4,14 @@ namespace ET
 {
     public class PlayerMoveComponent: Entity,IAwake
     {
-        /// <summary>
-        /// 重力
-        /// </summary>
-        public int Mass;
+       
    
         /// <summary>
         /// 当前x轴速度,发生变化,需要除以1000
         /// </summary>
         public int CurrentXSpeed=0;
         
-        /// <summary>
-        /// 当前y轴速度
-        /// </summary>
-        public int JumpSpeed = 500;
 
-        /// <summary>
-        /// 在跳跃状态停留的时间 单位ms
-        /// </summary>
-        public int JumpTime = 500;
-        
-  
         /// <summary>
         /// 当前z轴速度,不发生变化,需要除以1000
         /// </summary>
@@ -51,32 +38,52 @@ namespace ET
         /// </summary>
         public bool IsCollision;
 
-
-        /// <summary>
-        /// 当前所在位置
-        /// </summary>
-        public Vector3 Position;
-
-        /// <summary>
-        /// 当前旋转信息
-        /// </summary>
-        public Quaternion Rotation;
-
-        /// <summary>
-        /// 当前大小信息
-        /// </summary>
-        public Vector3 LocalScale;
+        
 
         /// <summary>
         /// 碰撞持续时间 单位ms
         /// </summary>
-        public int CollisionTime=300;
+        public int CollisionTime=500;
 
 
         /// <summary>
         /// 碰撞后需要位移的数据 方向x长度
         /// </summary>
         public Vector3 CollisionData;
+        
+        /// <summary>
+        /// 是否正在跳跃
+        /// </summary>
+        public bool IsJump;
+        
+        /// <summary>
+        /// 跳跃持续时间 单位ms
+        /// </summary>
+        public int JumpTime=500;
+
+
+        /// <summary>
+        /// 碰撞后需要位移的数据 方向x长度
+        /// </summary>
+        public Vector3 JumpData;
+
+
+        /// <summary>
+        /// 是否不可再向左边移动
+        /// </summary>
+        public bool LeftLimit=false;
+        /// <summary>
+        /// 是否不可再向右边移动
+        /// </summary>
+        public bool RightLimit=false;
+        /// <summary>
+        /// 是否不可再向前边移动
+        /// </summary>
+        public bool ForwardLimit=false;
+        /// <summary>
+        /// 是否不可再向后边移动
+        /// </summary>
+        public bool BackLimit=false;
 
     }
 }

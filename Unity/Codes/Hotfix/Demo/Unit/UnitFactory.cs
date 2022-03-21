@@ -57,9 +57,17 @@ namespace ET
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(Game.IdGenerater.GenerateId(), (int)unitType);
 	        unitComponent.Add(unit);
+	        
 	        unit.AddComponent<BoxColliderComponent>();
 	        unit.AddComponent<PlayerMoveComponent>();
+	        unit.AddComponent<DropComponent>();
+	        unit.AddComponent<TransformPositionComponent>();
+	        unit.AddComponent<TransformLocalScaleComponent>();
+	        unit.AddComponent<TransformEulerAngleComponent>();
+	        unit.AddComponent<MassComponent>();
+	        
 	        Game.EventSystem.Publish(new EventType.AfterPlayerUnitCreate() {Unit = unit});
+	        
 	        return unit;
         }
         
@@ -74,9 +82,17 @@ namespace ET
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(Game.IdGenerater.GenerateId(), (int)UnitType.Ground);
 	        unitComponent.Add(unit);
+	        
 	        unit.AddComponent<BoxColliderComponent>();
+	        unit.AddComponent<TransformPositionComponent>();
+	        unit.AddComponent<TransformLocalScaleComponent>();
+	        unit.AddComponent<TransformEulerAngleComponent>();
+	        unit.AddComponent<MassComponent>();
+	        
 	        Game.EventSystem.Publish(new EventType.AfterGroundUnitCreate() {Unit = unit,Name = name});
+	        
 	        return unit;
+	        
         }
         
         

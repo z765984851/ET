@@ -12,8 +12,6 @@ namespace ET
             self.LevelUnits = new List<Unit>();
             ColliderCheckComponent colliderSystem= self.AddComponent<ColliderCheckComponent>();
             colliderSystem.ColliderUnits = new List<Unit>();
-            Log.Debug("Level Life  Awake !!!!!");
-          
             self.CreatePlayer1();
             self.CreatePlayer2();
             self.CollectSceneUnits();
@@ -34,6 +32,7 @@ namespace ET
                     return;
                 }
             }
+            
             //检测用户按键
             for (int i = 0; i < self.Players.Count; i++)
             {
@@ -46,28 +45,12 @@ namespace ET
                 }
                 
             }
-           
             
-            //刷新碰撞盒数据
-            for (int i = 0; i < self.Players.Count; i++)
-            {
-                Unit player = self.Players[i];
-                var colliderComponent= player.GetComponent<BoxColliderComponent>();
-                var moveComponent=player.GetComponent<PlayerMoveComponent>();
-                if (colliderComponent!=null&& moveComponent !=null)
-                {
-                    colliderComponent.Center = moveComponent.Position;
-                    colliderComponent.Rotation =moveComponent.Rotation;
-                    colliderComponent.Extents = 0.5f * moveComponent.LocalScale;
-                }
-                
-            }
-            
-            
+            //检测碰撞
             ColliderCheckComponent colliderSystem= self.GetComponent<ColliderCheckComponent>();
             if (colliderSystem!=null)
             {
-                colliderSystem.PlayerColliderCheck();
+                colliderSystem.ColliderCheck();
             }
             
         }

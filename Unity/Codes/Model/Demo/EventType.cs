@@ -138,9 +138,23 @@ namespace ET
             public string Name;
         }
         
-        public struct UnitDrop
+        public struct UnitCollider
         {
-            public Unit Unit;
+            public Unit Unit1;
+            public Unit Unit2;
+        }
+        
+        public struct PlayerUnitCollider
+        {
+            public Unit Unit1;
+            public Unit Unit2;
+        }
+        
+        public struct PlayerJumpDisplay
+        {
+            public Unit Player;
+            public Vector3 Direction;
+            public float Distance;
         }
     }
 }

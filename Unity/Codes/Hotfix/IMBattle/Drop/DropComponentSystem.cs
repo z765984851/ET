@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
     public static class DropComponentSystem 
     {
@@ -7,14 +9,43 @@
             self.IsDrop = isDrop;
         }
 
-        public static async ETTask Drop(this DropComponent self)
+        public static void Drop(this DropComponent self)
+        {
+            
+            if (self.IsDrop)
+            {
+                Unit unit = self.GetParent<Unit>();
+                if (unit!=null)
+                {
+                    
+                    var transform= unit.GetComponent<TransformPositionComponent>();
+                    if (transform!=null)
+                    {
+                        transform.Y -= self.DropSpeed;
+                        
+                    }
+                }
+            }
+            else
+            {
+                self.IsDrop = true;
+            }
+           
+            
+        }
+        
+        public static void Jump(this DropComponent self)
         {
             Unit unit = self.GetParent<Unit>();
             if (unit!=null)
             {
-                Game.EventSystem.Publish(new EventType.UnitDrop(){Unit = unit});
+                var transform= unit.GetComponent<TransformPositionComponent>();
+                if (transform!=null)
+                {
+                    transform.Y += self.DropSpeed;
+                }
             }
-            await ETTask.CompletedTask;
+            
         }
     }
 }

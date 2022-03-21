@@ -1,6 +1,6 @@
 ﻿
 
-using System;
+
 using UnityEngine;
 
 namespace ET
@@ -30,7 +30,14 @@ namespace ET
                 float distance;
                 
                 //两个玩家的重力差
-                int massDif = moveComponent1.Mass - moveComponent2.Mass;
+                int massDif = 0;
+                MassComponent player1Mass = player1.GetComponent<MassComponent>();
+                MassComponent player2Mass = player2.GetComponent<MassComponent>();
+                if (player1Mass!=null && player2Mass!=null)
+                {
+                    massDif = player1Mass.Mass - player2Mass.Mass;
+                }
+                
                 //双方都在移动
                 if (speed1!=Vector3.zero&& speed2!=Vector3.zero)
                 {
@@ -118,15 +125,29 @@ namespace ET
                 }
 
                 var moveComponent = forcePlayer.GetComponent<PlayerMoveComponent>();
+                
                 var speedCal = Mathf.Clamp((float)moveComponent.CurrentXSpeed / moveComponent.MaxSpeed,0.5f,1f) ;
-                   
+                //如果其中一方前一帧在垂直落地
+                if (direction.x==0 && direction.z==0 && direction.y !=0)
+                {
+                    direction = Vector3.left;
+                }
+                else
+                {
+                    //限制在高度上不做碰撞处理
+                    direction = new Vector3(direction.x,0,direction.z);
+                }
+                
+                
+                
+                Debug.Log($"碰撞结果 {forcePlayer.ConfigId},{speedCal},{direction},{distance} ");
                 Game.EventSystem.Publish(new EventType.PlayerColliderDisplay()
                 {
                     Direction = direction ,
-                    Distance = distance * speedCal/2,
+                    Distance = distance * speedCal*0.5f,//乘0.5是为了缩短距离
                     ForcePlayer = forcePlayer
                 });
-                Debug.Log($"碰撞结果 {forcePlayer.ConfigId},{speedCal},{direction},{distance} ");
+                
                 
             }
             

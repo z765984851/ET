@@ -63,12 +63,7 @@ namespace ET
                 {
                     Addressables.Release(assetCached[file.Key]);
                 }
-          
-
-                if (this.handleCached.ContainsKey(file.Key))
-                {
-                    Addressables.Release(handleCached[file.Key]);
-                }
+                
             }
             this.assetCached.Clear();
             this.handleCached.Clear();

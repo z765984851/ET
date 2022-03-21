@@ -1,24 +1,33 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ET
 {
     public static class PlayerMoveComponentSystem
     {
         /// <summary>
-        /// 更新物体坐标
+        /// 通过物体身上的TransformPosition组件更新坐标
         /// </summary>
         /// <param name="self"></param>
         /// <param name="pos"></param>
-        public static void SetPos(this PlayerMoveComponent self,Vector3 pos)
+        public static void UpdatePos(this PlayerMoveComponent self)
         {
-            self.LastFramePos = self.Position;
-            self.Position = pos;
-            Game.EventSystem.Publish(new EventType.PlayerMove(){TargetPos = pos,Unit = self.GetParent<Unit>()});
+            Unit unit = self.GetParent<Unit>();
+            if (unit!=null)
+            {
+                var posComponent = unit.GetComponent<TransformPositionComponent>();
+                if (posComponent!=null)
+                {
+                    Game.EventSystem.Publish(new EventType.PlayerMove(){TargetPos = posComponent.Position,Unit = self.GetParent<Unit>()});
+                }
+            }
         }
         
 
+       
+        
         /// <summary>
-        /// 设置配装状态
+        /// 设置碰撞状态
         /// </summary>
         /// <param name="self"></param>
         /// <param name="isCollision"></param>
@@ -26,7 +35,12 @@ namespace ET
         {
             self.IsCollision = isCollision;
         }
-       
+
+
+        public static void SetJump(this PlayerMoveComponent self,bool isJump)
+        {
+            self.IsJump = isJump;
+        }
 
         /// <summary>
         /// 获取速度方向向量
@@ -35,7 +49,18 @@ namespace ET
         /// <returns></returns>
         public static Vector3 GetSpeedVector(this PlayerMoveComponent self)
         {
-            return self.Position - self.LastFramePos;
+            Vector3 v=Vector3.zero;
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                if (posComp!=null)
+                {
+                    v = posComp.Position - self.LastFramePos;
+                    
+                }
+            }
+            return v;
         }
         
         public static void SpeedUp_Left(this PlayerMoveComponent self)
@@ -80,8 +105,21 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Forward(this PlayerMoveComponent self)
         {
-            Vector3 target = self.Position + Vector3.forward * self.CurrentZSpeed/1000;
-            self.SetPos(target);
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                if (posComp!=null)
+                {
+                    if (!self.ForwardLimit)
+                    {
+                        posComp.Z += self.CurrentZSpeed;
+                    }
+                   
+                    self.UpdatePos();
+                }
+            }
+           
         }
         /// <summary>
         /// 输入向后移动的按键
@@ -89,8 +127,22 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Back(this PlayerMoveComponent self)
         {
-            Vector3 target = self.Position + Vector3.back * self.CurrentZSpeed/1000;
-            self.SetPos(target);
+          
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                if (posComp!=null)
+                {
+                    // self.LastFramePos = posComp.Position;
+                    if (!self.BackLimit)
+                    {
+                        posComp.Z -= self.CurrentZSpeed;
+                    }
+                  
+                    self.UpdatePos();
+                }
+            }
         }
         
         /// <summary>
@@ -99,9 +151,25 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Left(this PlayerMoveComponent self)
         {
-            self.SpeedUp_Left();
-            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/1000;
-            self.SetPos(target);
+           
+           
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                if (posComp!=null)
+                {
+                    self.SpeedUp_Left();
+                    if (!self.LeftLimit)
+                    {
+                        posComp.X += self.CurrentXSpeed;
+                    }
+                    
+                    self.UpdatePos();
+                }
+            }
+           
+            
         }
         
         /// <summary>
@@ -110,13 +178,59 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Right(this PlayerMoveComponent self)
         {
-            self.SpeedUp_Right();
-            Vector3 target = self.Position + Vector3.right * self.CurrentXSpeed/1000;
-            self.SetPos(target);
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                if (posComp!=null)
+                {
+                    self.SpeedUp_Right();
+                    if (!self.RightLimit)
+                    {
+                        posComp.X += self.CurrentXSpeed;
+                    }
+                    self.UpdatePos();
+                }
+            }
         }
+        
+        
 
+        /// <summary>
+        /// 输入向右移动的按键
+        /// </summary>
+        /// <param name="self"></param>
+        public static void Drop(this PlayerMoveComponent self)
+        {
+            
+            Unit unit = self.GetParent<Unit>();
+            if (unit != null)
+            {
+                var posComp = unit.GetComponent<TransformPositionComponent>();
+                var dropComp = unit.GetComponent<DropComponent>();
+               
+                if (posComp!=null && dropComp!=null)
+                {
+                    
+                    // self.LastFramePos = posComp.Position;
+                    dropComp.Drop();
+                    self.UpdatePos();
+                }
+            }
+        }
         
-        
+        /// <summary>
+        /// 获取跳跃的数据
+        /// </summary>
+        /// <param name="self"></param>
+        public static void Jump(this PlayerMoveComponent self)
+        {
+
+            int distance = Math.Abs(self.CurrentXSpeed * self.JumpTime) ;
+            Vector3 dir = self.GetSpeedVector().normalized;
+            self.JumpData = dir * distance/15000;
+            
+        }
         
     }
 }
