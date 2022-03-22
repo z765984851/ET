@@ -18,27 +18,39 @@ namespace ET
             if (transformPositionComponent!=null)
             {
                 Vector3 pos = go.transform.position;
-                transformPositionComponent.X = IMMathHelper.FloatToInt(pos.x * 1000);
-                transformPositionComponent.Y = IMMathHelper.FloatToInt(pos.y * 1000);
-                transformPositionComponent.Z = IMMathHelper.FloatToInt(pos.z * 1000);
+                // transformPositionComponent.X = IMMathHelper.FloatToInt(pos.x * 1000);
+                // transformPositionComponent.Y = IMMathHelper.FloatToInt(pos.y * 1000);
+                // transformPositionComponent.Z = IMMathHelper.FloatToInt(pos.z * 1000);
+                transformPositionComponent.SetX(pos.x);
+                transformPositionComponent.SetY(pos.y);
+                transformPositionComponent.SetZ(pos.z);
             }
             //设置大小
             TransformLocalScaleComponent transformLocalScaleComponent = unit.GetComponent<TransformLocalScaleComponent>();
             if (transformLocalScaleComponent!=null)
             {
                 Vector3 scale = go.transform.localScale;
-                transformLocalScaleComponent.X = IMMathHelper.FloatToInt(scale.x * 1000);
-                transformLocalScaleComponent.Y = IMMathHelper.FloatToInt(scale.y * 1000);
-                transformLocalScaleComponent.Z = IMMathHelper.FloatToInt(scale.z * 1000);
+                // transformLocalScaleComponent.X = IMMathHelper.FloatToInt(scale.x * 1000);
+                // transformLocalScaleComponent.Y = IMMathHelper.FloatToInt(scale.y * 1000);
+                // transformLocalScaleComponent.Z = IMMathHelper.FloatToInt(scale.z * 1000);
+                
+                transformLocalScaleComponent.SetX(scale.x);
+                transformLocalScaleComponent.SetY(scale.y);
+                transformLocalScaleComponent.SetZ(scale.z);
             }
             //设置旋转
             TransformEulerAngleComponent transformEulerAngleComponent = unit.GetComponent<TransformEulerAngleComponent>();
             if (transformEulerAngleComponent!=null)
             {
                 Vector3 angle = go.transform.eulerAngles;
-                transformEulerAngleComponent.X = IMMathHelper.FloatToInt(angle.x * 1000);
-                transformEulerAngleComponent.Y = IMMathHelper.FloatToInt(angle.y * 1000);
-                transformEulerAngleComponent.Z = IMMathHelper.FloatToInt(angle.z * 1000);
+                // transformEulerAngleComponent.X = IMMathHelper.FloatToInt(angle.x * 1000);
+                // transformEulerAngleComponent.Y = IMMathHelper.FloatToInt(angle.y * 1000);
+                // transformEulerAngleComponent.Z = IMMathHelper.FloatToInt(angle.z * 1000);
+                
+                transformEulerAngleComponent.SetX(angle.x);
+                transformEulerAngleComponent.SetY(angle.y);
+                transformEulerAngleComponent.SetZ(angle.z);
+                
             }
             
             await ETTask.CompletedTask;

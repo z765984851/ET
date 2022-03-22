@@ -105,21 +105,8 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Forward(this PlayerMoveComponent self)
         {
-            Unit unit = self.GetParent<Unit>();
-            if (unit != null)
-            {
-                var posComp = unit.GetComponent<TransformPositionComponent>();
-                if (posComp!=null)
-                {
-                    if (!self.ForwardLimit)
-                    {
-                        posComp.Z += self.CurrentZSpeed;
-                    }
-                   
-                    self.UpdatePos();
-                }
-            }
-           
+            self.MoveZ(self.CurrentZSpeed);
+            self.UpdatePos();
         }
         /// <summary>
         /// 输入向后移动的按键
@@ -128,21 +115,8 @@ namespace ET
         public static void InputMove_Back(this PlayerMoveComponent self)
         {
           
-            Unit unit = self.GetParent<Unit>();
-            if (unit != null)
-            {
-                var posComp = unit.GetComponent<TransformPositionComponent>();
-                if (posComp!=null)
-                {
-                    // self.LastFramePos = posComp.Position;
-                    if (!self.BackLimit)
-                    {
-                        posComp.Z -= self.CurrentZSpeed;
-                    }
-                  
-                    self.UpdatePos();
-                }
-            }
+            self.MoveZ(-self.CurrentZSpeed);
+            self.UpdatePos();
         }
         
         /// <summary>
@@ -151,24 +125,9 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Left(this PlayerMoveComponent self)
         {
-           
-           
-            Unit unit = self.GetParent<Unit>();
-            if (unit != null)
-            {
-                var posComp = unit.GetComponent<TransformPositionComponent>();
-                if (posComp!=null)
-                {
-                    self.SpeedUp_Left();
-                    if (!self.LeftLimit)
-                    {
-                        posComp.X += self.CurrentXSpeed;
-                    }
-                    
-                    self.UpdatePos();
-                }
-            }
-           
+            self.SpeedUp_Left();
+            self.MoveX(self.CurrentXSpeed);
+            self.UpdatePos();
             
         }
         
@@ -178,20 +137,9 @@ namespace ET
         /// <param name="self"></param>
         public static void InputMove_Right(this PlayerMoveComponent self)
         {
-            Unit unit = self.GetParent<Unit>();
-            if (unit != null)
-            {
-                var posComp = unit.GetComponent<TransformPositionComponent>();
-                if (posComp!=null)
-                {
-                    self.SpeedUp_Right();
-                    if (!self.RightLimit)
-                    {
-                        posComp.X += self.CurrentXSpeed;
-                    }
-                    self.UpdatePos();
-                }
-            }
+            self.SpeedUp_Right();
+            self.MoveX(self.CurrentXSpeed);
+            self.UpdatePos();
         }
         
         
@@ -231,6 +179,98 @@ namespace ET
             self.JumpData = dir * distance/15000;
             
         }
+
+
+        public static void MoveX(this PlayerMoveComponent self,int value)
+        {
+            Unit unit = self.GetParent<Unit>();
+            if (unit==null)
+            {
+                return;
+            }
+            var posComp = unit.GetComponent<TransformPositionComponent>();
+            if (posComp==null)
+            {
+                return;
+            }
+
+            if (value>0)
+            {
+                if (self.RightLimit)
+                {
+                    return;
+                }  
+            }
+            else
+            {
+                if (self.LeftLimit)
+                {
+                    return;
+                }  
+            }
+            posComp.SetX(posComp.X+value);
+        }
         
+        public static void MoveY(this PlayerMoveComponent self,int value)
+        {
+            Unit unit = self.GetParent<Unit>();
+            if (unit==null)
+            {
+                return;
+            }
+            var posComp = unit.GetComponent<TransformPositionComponent>();
+            if (posComp==null)
+            {
+                return;
+            }
+
+            if (value>0)
+            {
+                if (self.UpLimit)
+                {
+                   return;
+                }  
+            }
+            else
+            {
+                if (self.DownLimit)
+                {
+                    return;
+                }  
+            }
+            posComp.SetY(posComp.Y+value);
+        }
+
+        public static void MoveZ(this PlayerMoveComponent self,int value)
+        {
+            Unit unit = self.GetParent<Unit>();
+            if (unit==null)
+            {
+                return;
+            }
+            var posComp = unit.GetComponent<TransformPositionComponent>();
+            if (posComp==null)
+            {
+                return;
+            }
+
+            if (value>0)
+            {
+                if (self.ForwardLimit)
+                {
+                    return;
+                }  
+            }
+            else
+            {
+                if (self.BackLimit)
+                {
+                    return;
+                }  
+            }
+            
+            posComp.SetZ(posComp.Z+value);
+        }
+
     }
 }

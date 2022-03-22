@@ -69,21 +69,29 @@ namespace ET
 
 
         /// <summary>
-        /// 是否不可再向左边移动
+        /// 是否不可再向左移动
         /// </summary>
         public bool LeftLimit=false;
         /// <summary>
-        /// 是否不可再向右边移动
+        /// 是否不可再向右移动
         /// </summary>
         public bool RightLimit=false;
         /// <summary>
-        /// 是否不可再向前边移动
+        /// 是否不可再向前移动
         /// </summary>
         public bool ForwardLimit=false;
         /// <summary>
-        /// 是否不可再向后边移动
+        /// 是否不可再向后移动
         /// </summary>
         public bool BackLimit=false;
-
+        
+        /// <summary>
+        /// 是否不可再向上移动
+        /// </summary>
+        public bool UpLimit=false;
+        /// <summary>
+        /// 是否不可再向下移动
+        /// </summary>
+        public bool DownLimit=false;
     }
 }

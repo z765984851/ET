@@ -47,13 +47,12 @@ namespace ET
                 Vector3 addData = moveComponent.CollisionData * delta;
                 //碰撞演出
                 Vector3 targetPos = posComp.Position + addData;
-                    
-                  
-                posComp.X = IMMathHelper.FloatToInt(targetPos.x * 1000);
-                posComp.Y = IMMathHelper.FloatToInt (targetPos.y * 1000);
-                posComp.Z = IMMathHelper.FloatToInt (targetPos.z * 1000);
+                moveComponent.MoveX(IMMathHelper.FloatToInt(targetPos.x*1000-posComp.X));
+                moveComponent.MoveY(IMMathHelper.FloatToInt(targetPos.y*1000-posComp.Y));
+                moveComponent.MoveZ(IMMathHelper.FloatToInt(targetPos.z*1000-posComp.Z));
+               
                 moveComponent.UpdatePos();
-                // Debug.Log($"碰撞播放,{x},{moveComponent.LastFramePos},  {targetPos}, {addData}");
+                // Debug.Log($"碰撞播放,{moveComponent.LastFramePos},  {targetPos}, {addData}");
             }
             //跳跃演出
             else if (moveComponent.IsJump)
@@ -68,9 +67,9 @@ namespace ET
                     float delta = Time.fixedDeltaTime / (moveComponent.CollisionTime/(float)1000);
                     Vector3 addData = moveComponent.JumpData * delta;
                     Vector3 targetPos = posComp.Position + addData;
-                    posComp.X = IMMathHelper.FloatToInt(targetPos.x * 1000);
-                    posComp.Z = IMMathHelper.FloatToInt (targetPos.z * 1000);
-
+                   
+                    moveComponent.MoveX(IMMathHelper.FloatToInt(targetPos.x*1000-posComp.X));
+                    moveComponent.MoveZ(IMMathHelper.FloatToInt(targetPos.z*1000-posComp.Z));
                     //执行跳跃
                     if (self.IsJumpUp)
                     {
@@ -79,7 +78,7 @@ namespace ET
                         dropComp.SetDrop(false);
                     }
                     moveComponent.UpdatePos();
-                    // Debug.Log($"碰撞播放,{x},{moveComponent.LastFramePos},  {targetPos}, {addData}");
+                    
                 }
                 
             }
