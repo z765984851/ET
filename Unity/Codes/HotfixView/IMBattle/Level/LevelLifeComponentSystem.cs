@@ -51,6 +51,7 @@ namespace ET
             if (colliderSystem!=null)
             {
                 colliderSystem.ColliderCheck();
+                
             }
             
         }
